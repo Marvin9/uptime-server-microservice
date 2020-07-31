@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"./pkg/scheduler"
+	"github.com/Marvin9/uptime-server-microservice/pkg/scheduler"
 )
 
 const url string = "https://marvin9-web-analyzer-server.glitch.me/"

@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"../utils"
+	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
 )
 
 // Schedule - schedule to check status of url after delay
