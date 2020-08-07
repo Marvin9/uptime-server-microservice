@@ -1,6 +1,8 @@
 package models
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,6 +12,14 @@ func ErrorResponse(err string) gin.H {
 		"error":   true,
 		"message": err,
 	}
+}
+
+// CustomErrorResponse will return default error message if it is not internal error.
+func CustomErrorResponse(responseStatusCode int, err error, customMessage string) gin.H {
+	if responseStatusCode != http.StatusInternalServerError {
+		return ErrorResponse(err.Error())
+	}
+	return ErrorResponse(customMessage)
 }
 
 // SuccessResponse is successful operation of any request

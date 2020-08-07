@@ -33,6 +33,7 @@ func main() {
 	authenticationGroup := r.Group("/auth")
 	{
 		authenticationGroup.POST("/register", api.RegisterAPI)
+		authenticationGroup.POST("/login", api.LoginAPI)
 	}
 
 	r.Run(":8000")

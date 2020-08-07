@@ -2,21 +2,20 @@ package api
 
 import (
 	"log"
-	"net/http"
+
+	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/database"
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
 	"github.com/gin-gonic/gin"
 )
 
-// RegisterAPI is used to register user => /register
+// RegisterAPI is used to register user => /auth/register
 func RegisterAPI(c *gin.Context) {
 	// request_body.go
 	var user models.User
-	err := c.BindJSON(&user)
-	if err != nil {
-		log.Print("Error binding json.\n", err)
-		c.JSON(http.StatusBadRequest, models.ErrorResponse("Invalid request body."))
+	ok := user.BindBody(c)
+	if !ok {
 		return
 	}
 
@@ -25,13 +24,28 @@ func RegisterAPI(c *gin.Context) {
 	statusCode, err := database.RegisterUser(user.Email, user.Password)
 	if err != nil {
 		log.Println("Error registering user in database.\n", err)
-		if statusCode != http.StatusInternalServerError {
-			c.JSON(statusCode, models.ErrorResponse(err.Error()))
-		} else {
-			c.JSON(statusCode, models.ErrorResponse("Error registering user."))
-		}
+		c.JSON(statusCode, models.CustomErrorResponse(statusCode, err, "Error registering user."))
 		return
 	}
 
 	c.JSON(statusCode, models.SuccessResponse("Successfully registered user."))
+}
+
+// LoginAPI is used to login user => /auth/login
+func LoginAPI(c *gin.Context) {
+	var user models.User
+	ok := user.BindBody(c)
+	if !ok {
+		return
+	}
+
+	statusCode, jwtToken, err := database.LoginUser(user.Email, user.Password)
+	if err != nil {
+		log.Println("Error logging in.\n", err)
+		c.JSON(statusCode, models.CustomErrorResponse(statusCode, err, "Error logging in."))
+		return
+	}
+
+	c.SetCookie("jwt", jwtToken, int(utils.JWTExpireAfter.Milliseconds()), "/", "localhost", false, true)
+	c.JSON(statusCode, models.SuccessResponse("Successfully logged in."))
 }
