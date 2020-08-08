@@ -15,6 +15,6 @@ func GetReports(userUniqueID string) (int, []models.Reports, error) {
 	}
 	defer db.Close()
 
-	db.Where("Owner = ?", userUniqueID).Find(&reports)
+	db.Select("url, status, reported_at").Where("Owner = ?", userUniqueID).Find(&reports)
 	return http.StatusOK, reports, nil
 }
