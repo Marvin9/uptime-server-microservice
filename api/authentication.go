@@ -48,6 +48,6 @@ func LoginAPI(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie(JWTCookieName, jwtToken, int(utils.JWTExpireAfter), "/", "localhost", false, true)
+	c.SetCookie(JWTCookieName, jwtToken, int(utils.JWTCookieExpireAfter), "/", "localhost", false, true)
 	c.JSON(statusCode, models.SuccessResponse("Successfully logged in."))
 }
