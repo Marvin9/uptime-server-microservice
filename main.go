@@ -45,7 +45,12 @@ func main() {
 		authorizedGroup.Use(middlewares.IsAuthorized())
 		{
 			authorizedGroup.GET("/", func(c *gin.Context) {
-				c.JSON(http.StatusOK, models.SuccessResponse("Authorized"))
+				jwtClaim, err := middlewares.ExtractJWTClaimFromContext(c)
+				if err != nil {
+					c.JSON(http.StatusUnauthorized, models.ErrorResponse(err.Error()))
+					return
+				}
+				c.JSON(http.StatusOK, models.SuccessResponse(jwtClaim.UniqueID))
 			})
 		}
 	}

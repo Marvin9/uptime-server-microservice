@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
@@ -12,6 +13,9 @@ import (
 )
 
 const unauthorized = "Unauthorized"
+
+// SharedJWTClaimFromMiddleware is used to share jwt claim to next middleware, where UniqueID of user is utilized
+const SharedJWTClaimFromMiddleware = "jwtClaims"
 
 // IsAuthorized is middleware to check if user is logged in or not
 func IsAuthorized() gin.HandlerFunc {
@@ -37,6 +41,17 @@ func IsAuthorized() gin.HandlerFunc {
 			return
 		}
 
+		c.Set(SharedJWTClaimFromMiddleware, jwtClaims)
 		c.Next()
 	}
+}
+
+// ExtractJWTClaimFromContext is used to extract jwt claim which was set in middleware
+func ExtractJWTClaimFromContext(c *gin.Context) (*models.Claims, error) {
+	data, _ := c.Get(SharedJWTClaimFromMiddleware)
+	jwtClaim, ok := data.(*models.Claims)
+	if !ok {
+		return &models.Claims{}, errors.New("Unauthorized")
+	}
+	return jwtClaim, nil
 }
