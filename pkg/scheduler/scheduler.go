@@ -27,21 +27,28 @@ func Action(ownerUniqueID, url string, t time.Time, status int) {
 	}
 	defer db.Close()
 
-	uniqueID, err := utils.GenerateUniqueID()
-	if err != nil {
-		log.Print("Error generating unique id.\n", err)
-		return
-	}
+	// GET LATEST REPORT
+	var latestReport = models.Reports{}
+	db.Where("Owner = ? AND URL = ?", ownerUniqueID, url).Order("reported_at DESC").First(&latestReport)
 
-	instance := models.Reports{
-		UniqueID:   uniqueID,
-		Owner:      ownerUniqueID,
-		URL:        url,
-		Status:     status,
-		ReportedAt: t,
-	}
+	// IF THE STATUS FLUCTUATE THEN STORE IT IN DATABASE
+	if latestReport.Status != status {
+		uniqueID, err := utils.GenerateUniqueID()
+		if err != nil {
+			log.Print("Error generating unique id.\n", err)
+			return
+		}
 
-	db.Create(&instance)
+		instance := models.Reports{
+			UniqueID:   uniqueID,
+			Owner:      ownerUniqueID,
+			URL:        url,
+			Status:     status,
+			ReportedAt: t,
+		}
+
+		db.Create(&instance)
+	}
 }
 
 // InjectScheduler is used to add instance for server monitoring
