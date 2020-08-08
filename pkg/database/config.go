@@ -32,7 +32,7 @@ var migratedDbOnce = false
 // InitialMigration to migrate initially
 func InitialMigration(db *gorm.DB) {
 	if !migratedDbOnce {
-		db.AutoMigrate(&models.Users{}, &models.Reports{})
+		db.AutoMigrate(&models.Users{}, &models.Reports{}, &models.Instances{})
 		migratedDbOnce = true
 	}
 }

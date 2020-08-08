@@ -18,9 +18,18 @@ type Users struct {
 type Reports struct {
 	gorm.Model
 	ID         int       `json:",omitempty"`
-	UniqueID   string    `gorm:"primary_key" json:",omitempty"`
-	Owner      string    `json:",omitempty"`
-	URL        string    `json:"url"`
+	UniqueID   string    `gorm:"primary_key" json:"unique_id"`
+	InstanceID string    `json:"instance_id"`
+	Instace    Instances `gorm:"foreign_key:instance_id"`
 	Status     int       `json:"status"`
 	ReportedAt time.Time `json:"reported_at"`
+}
+
+// Instances is table to store instance with map of => owner & url
+type Instances struct {
+	gorm.Model
+	ID       int    `json:",omitempty"`
+	UniqueID string `gorm:"primary_key" json:",omitempty"`
+	Owner    string `json:",omitempty"`
+	URL      string `json:"url"`
 }

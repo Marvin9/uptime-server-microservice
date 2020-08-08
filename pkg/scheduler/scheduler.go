@@ -13,13 +13,13 @@ import (
 
 var waitGroup sync.WaitGroup
 
-type schedulerStorage = map[string](chan bool)
+type schedulerStorage = map[string](map[string](chan bool))
 
 // SchedulerList is all schedulers working
 var SchedulerList = make(schedulerStorage)
 
 // Action will be envoked after certain duration
-func Action(ownerUniqueID, url string, t time.Time, status int) {
+func Action(newInstanceID, url string, t time.Time, status int) {
 	db, err := database.ConnectDB()
 	if err != nil {
 		log.Print("Error connecting database.\n", err)
@@ -29,7 +29,7 @@ func Action(ownerUniqueID, url string, t time.Time, status int) {
 
 	// GET LATEST REPORT
 	var latestReport = models.Reports{}
-	db.Where("Owner = ? AND URL = ?", ownerUniqueID, url).Order("reported_at DESC").First(&latestReport)
+	db.Where("instance_id = ?", newInstanceID).Order("reported_at DESC").First(&latestReport)
 
 	// IF THE STATUS FLUCTUATE THEN STORE IT IN DATABASE
 	if latestReport.Status != status {
@@ -41,8 +41,7 @@ func Action(ownerUniqueID, url string, t time.Time, status int) {
 
 		instance := models.Reports{
 			UniqueID:   uniqueID,
-			Owner:      ownerUniqueID,
-			URL:        url,
+			InstanceID: newInstanceID,
 			Status:     status,
 			ReportedAt: t,
 		}
@@ -52,18 +51,22 @@ func Action(ownerUniqueID, url string, t time.Time, status int) {
 }
 
 // InjectScheduler is used to add instance for server monitoring
-func InjectScheduler(ownerUniqueID, url string, delay time.Duration) bool {
+func InjectScheduler(newInstanceID, ownerUniqueID, url string, delay time.Duration) bool {
 	waitGroup.Add(1)
-	_, ok := SchedulerList[url]
+	_, ok := SchedulerList[ownerUniqueID][url]
 	if !ok {
-		stop := Schedule(ownerUniqueID, url, delay)
-		SchedulerList[url] = stop
+		stop := Schedule(newInstanceID, url, delay)
+		_, ook := SchedulerList[ownerUniqueID]
+		if !ook {
+			SchedulerList[ownerUniqueID] = make(map[string](chan bool))
+		}
+		SchedulerList[ownerUniqueID][url] = stop
 	}
-	return ok
+	return !ok
 }
 
 // Schedule - schedule to check status of url after delay
-func Schedule(ownerUniqueID, forurl string, delay time.Duration) chan bool {
+func Schedule(newInstanceID, forurl string, delay time.Duration) chan bool {
 	waitGroup.Add(1)
 	defer waitGroup.Done()
 	stop := make(chan bool)
@@ -78,7 +81,7 @@ func Schedule(ownerUniqueID, forurl string, delay time.Duration) chan bool {
 				log.Print("\n")
 				return
 			}
-			Action(ownerUniqueID, forurl, time.Now(), status)
+			Action(newInstanceID, forurl, time.Now(), status)
 			select {
 			case <-time.After(delay):
 			case <-stop:
@@ -88,4 +91,10 @@ func Schedule(ownerUniqueID, forurl string, delay time.Duration) chan bool {
 	}()
 
 	return stop
+}
+
+// IsInstanceRunning returns true if that instance is already in memory
+func IsInstanceRunning(ownerID, url string) bool {
+	_, ok := SchedulerList[ownerID][url]
+	return ok
 }

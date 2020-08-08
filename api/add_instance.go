@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
+	"github.com/Marvin9/uptime-server-microservice/pkg/database"
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
 	"github.com/Marvin9/uptime-server-microservice/pkg/scheduler"
 	"github.com/gin-gonic/gin"
@@ -32,11 +33,18 @@ func AddInstance(c *gin.Context) {
 	}
 
 	userUniqueID := jwtClaims.UniqueID
-	schedulerAdded := scheduler.InjectScheduler(userUniqueID, instance.URL, instance.Duration)
-
-	if schedulerAdded {
-		c.JSON(http.StatusOK, models.SuccessResponse("Successfully added instance."))
-	} else {
+	if scheduler.IsInstanceRunning(userUniqueID, instance.URL) {
 		c.JSON(http.StatusConflict, models.ErrorResponse("There is already one instance for this URL."))
+		return
 	}
+
+	newInstanceID, err := database.CreateInstance(userUniqueID, instance.URL)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse("Failed to create new instance"))
+		return
+	}
+
+	scheduler.InjectScheduler(newInstanceID, userUniqueID, instance.URL, instance.Duration)
+
+	c.JSON(http.StatusOK, models.SuccessResponse("Successfully added instance."))
 }
