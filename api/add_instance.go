@@ -24,7 +24,11 @@ func AddInstance(c *gin.Context) {
 	}
 
 	userUniqueID := jwtClaims.UniqueID
-	scheduler.InjectScheduler(userUniqueID, instance.URL, instance.Duration)
+	schedulerAdded := scheduler.InjectScheduler(userUniqueID, instance.URL, instance.Duration)
 
-	c.JSON(http.StatusOK, models.SuccessResponse("Successfully added instance."))
+	if schedulerAdded {
+		c.JSON(http.StatusOK, models.SuccessResponse("Successfully added instance."))
+	} else {
+		c.JSON(http.StatusConflict, models.ErrorResponse("There is already one instance for this URL."))
+	}
 }

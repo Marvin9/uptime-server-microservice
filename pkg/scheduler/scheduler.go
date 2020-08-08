@@ -52,13 +52,14 @@ func Action(ownerUniqueID, url string, t time.Time, status int) {
 }
 
 // InjectScheduler is used to add instance for server monitoring
-func InjectScheduler(ownerUniqueID, url string, delay time.Duration) {
+func InjectScheduler(ownerUniqueID, url string, delay time.Duration) bool {
 	waitGroup.Add(1)
 	_, ok := SchedulerList[url]
 	if !ok {
 		stop := Schedule(ownerUniqueID, url, delay)
 		SchedulerList[url] = stop
 	}
+	return ok
 }
 
 // Schedule - schedule to check status of url after delay
