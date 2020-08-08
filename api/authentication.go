@@ -10,6 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const JWTCookieName = "jwt"
+
 // RegisterAPI is used to register user => /auth/register
 func RegisterAPI(c *gin.Context) {
 	// request_body.go
@@ -46,6 +48,6 @@ func LoginAPI(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie("jwt", jwtToken, int(utils.JWTExpireAfter), "/", "localhost", false, true)
+	c.SetCookie(JWTCookieName, jwtToken, int(utils.JWTExpireAfter), "/", "localhost", false, true)
 	c.JSON(statusCode, models.SuccessResponse("Successfully logged in."))
 }

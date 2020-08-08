@@ -2,10 +2,14 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"sync"
 	"time"
 
+	"github.com/Marvin9/uptime-server-microservice/pkg/models"
+
 	"github.com/Marvin9/uptime-server-microservice/api"
+	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
 	"github.com/Marvin9/uptime-server-microservice/pkg/scheduler"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -34,6 +38,16 @@ func main() {
 	{
 		authenticationGroup.POST("/register", api.RegisterAPI)
 		authenticationGroup.POST("/login", api.LoginAPI)
+	}
+
+	authorizedGroup := r.Group("/api")
+	{
+		authorizedGroup.Use(middlewares.IsAuthorized())
+		{
+			authorizedGroup.GET("/", func(c *gin.Context) {
+				c.JSON(http.StatusOK, models.SuccessResponse("Authorized"))
+			})
+		}
 	}
 
 	r.Run(":8000")
