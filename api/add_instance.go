@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
@@ -9,11 +10,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const instanceDurationLowerBound = time.Hour
+
 // AddInstance is used to add new server monitor => /api/instance
 func AddInstance(c *gin.Context) {
 	var instance models.Instance
 	ok := instance.BindBody(c)
 	if !ok {
+		return
+	}
+
+	if instance.Duration < instanceDurationLowerBound {
+		c.JSON(http.StatusBadRequest, models.ErrorResponse("Duration must be greater than or equal to 1 hour."))
 		return
 	}
 
