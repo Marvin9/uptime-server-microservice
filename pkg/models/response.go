@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,4 +29,16 @@ func SuccessResponse(message string) gin.H {
 		"error":   false,
 		"message": message,
 	}
+}
+
+// SuccessResponseWithData will encode data to json or return error
+func SuccessResponseWithData(data interface{}) (gin.H, error) {
+	jsonEncoded, err := json.Marshal(data)
+	if err != nil {
+		return gin.H{}, err
+	}
+	return gin.H{
+		"error": false,
+		"data":  jsonEncoded,
+	}, nil
 }

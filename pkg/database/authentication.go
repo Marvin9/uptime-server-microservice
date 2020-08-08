@@ -24,8 +24,6 @@ func RegisterUser(email, password string) (int, error) {
 	}
 	defer db.Close()
 
-	db.AutoMigrate(&models.Users{})
-
 	uniqueID, err := utils.GenerateUniqueID()
 	if err != nil {
 		return http.StatusInternalServerError, err

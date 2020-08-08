@@ -6,6 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/Marvin9/uptime-server-microservice/pkg/database"
+
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
 
 	"github.com/Marvin9/uptime-server-microservice/api"
@@ -31,6 +33,10 @@ func injectScheduler(url string, delay time.Duration, schedulerList schedulerSto
 }
 
 func main() {
+	db, _ := database.ConnectDB()
+	database.InitialMigration(db)
+	db.Close()
+
 	// var schedulers = make(schedulerStorage)
 	r := gin.Default()
 
@@ -52,6 +58,8 @@ func main() {
 				}
 				c.JSON(http.StatusOK, models.SuccessResponse(jwtClaim.UniqueID))
 			})
+
+			authorizedGroup.GET("/report", api.GetReport)
 		}
 	}
 

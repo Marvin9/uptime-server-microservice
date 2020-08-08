@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Marvin9/uptime-server-microservice/pkg/models"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -23,4 +25,14 @@ func ConnectDB() (*gorm.DB, error) {
 	}
 
 	return db, nil
+}
+
+var migratedDbOnce = false
+
+// InitialMigration to migrate initially
+func InitialMigration(db *gorm.DB) {
+	if !migratedDbOnce {
+		db.AutoMigrate(&models.Users{}, &models.Reports{})
+		migratedDbOnce = true
+	}
 }

@@ -7,7 +7,6 @@ import (
 	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
 	"github.com/dgrijalva/jwt-go"
 
-	"github.com/Marvin9/uptime-server-microservice/api"
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
 	"github.com/gin-gonic/gin"
 )
@@ -17,10 +16,13 @@ const unauthorized = "Unauthorized"
 // SharedJWTClaimFromMiddleware is used to share jwt claim to next middleware, where UniqueID of user is utilized
 const SharedJWTClaimFromMiddleware = "jwtClaims"
 
+// JWTCookieName is cookie name stored and retrieve by this name
+const JWTCookieName = "jwt"
+
 // IsAuthorized is middleware to check if user is logged in or not
 func IsAuthorized() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		jwtCookie, err := c.Cookie(api.JWTCookieName)
+		jwtCookie, err := c.Cookie(JWTCookieName)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, models.ErrorResponse(unauthorized))
 			c.Abort()

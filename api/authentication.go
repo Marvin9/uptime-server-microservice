@@ -3,14 +3,13 @@ package api
 import (
 	"log"
 
+	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
 	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/database"
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
 	"github.com/gin-gonic/gin"
 )
-
-const JWTCookieName = "jwt"
 
 // RegisterAPI is used to register user => /auth/register
 func RegisterAPI(c *gin.Context) {
@@ -48,6 +47,6 @@ func LoginAPI(c *gin.Context) {
 		return
 	}
 
-	c.SetCookie(JWTCookieName, jwtToken, int(utils.JWTCookieExpireAfter), "/", "localhost", false, true)
+	c.SetCookie(middlewares.JWTCookieName, jwtToken, int(utils.JWTCookieExpireAfter), "/", "localhost", false, true)
 	c.JSON(statusCode, models.SuccessResponse("Successfully logged in."))
 }
