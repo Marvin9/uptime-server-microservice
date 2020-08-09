@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/database"
+	"github.com/Marvin9/uptime-server-microservice/pkg/scheduler"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
 
@@ -18,6 +19,8 @@ func main() {
 	db, _ := database.ConnectDB()
 	database.InitialMigration(db)
 	db.Close()
+
+	go scheduler.RestartAllSchedulers()
 
 	// var schedulers = make(schedulerStorage)
 	r := gin.Default()

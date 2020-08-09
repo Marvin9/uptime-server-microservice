@@ -30,7 +30,7 @@ func GetReports(userUniqueID string) (int, []models.ReportResponse, error) {
 		return http.StatusInternalServerError, reports, err
 	}
 
-	db.Raw("select instances.url, reports.* from reports, instances where reports.instance_id = instances.unique_id and instances.owner = ?", userUniqueID).Scan(&reports)
+	db.Raw("select instances.url, reports.* from reports, instances where reports.instance_id = instances.unique_id and instances.owner = ? order by reports.reported_at desc", userUniqueID).Scan(&reports)
 
 	return http.StatusOK, reports, nil
 }
