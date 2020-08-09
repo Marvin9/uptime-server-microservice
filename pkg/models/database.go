@@ -17,10 +17,10 @@ type Users struct {
 // Reports is table to store report of server status
 type Reports struct {
 	gorm.Model
-	ID         int       `json:",omitempty"`
-	UniqueID   string    `gorm:"primary_key" json:"unique_id"`
-	InstanceID string    `json:"instance_id"`
-	Instace    Instances `gorm:"foreign_key:instance_id"`
+	ID         int    `json:",omitempty"`
+	UniqueID   string `gorm:"primary_key" json:"unique_id"`
+	InstanceID string `json:"instance_id"`
+	Instace    Instances
 	Status     int       `json:"status"`
 	ReportedAt time.Time `json:"reported_at"`
 }

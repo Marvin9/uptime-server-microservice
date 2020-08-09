@@ -9,19 +9,16 @@ import (
 )
 
 // GetReports returns status code, error
-func GetReports(userUniqueID string) (int, []models.Reports, error) {
+func GetReports(userUniqueID string) (int, []models.ReportResponse, error) {
 	db, err := ConnectDB()
 	defer db.Close()
-	var reports = []models.Reports{}
+	var reports = []models.ReportResponse{}
 	if err != nil {
 		return http.StatusInternalServerError, reports, err
 	}
 
-	db.Preload("Instances", "Owner = ?", userUniqueID).Find(&reports)
+	db.Raw("select instances.url, reports.* from reports, instances where reports.instance_id = instances.unique_id and instances.owner = ?", userUniqueID).Scan(&reports)
 
-	// db.Preload("Instance").Joins("JOIN instances ON reports.instance_id = instances.unique_id").Where("instances.owner = ?", userUniqueID).Find(&reports)
-
-	// db.Select("url, status, reported_at, unique_id").Where("Owner = ?", userUniqueID).Order("reported_at DESC").Find(&reports)
 	return http.StatusOK, reports, nil
 }
 

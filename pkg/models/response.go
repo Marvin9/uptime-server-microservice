@@ -2,6 +2,7 @@ package models
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,4 +37,12 @@ func SuccessResponseWithData(data interface{}) (gin.H, error) {
 		"error": false,
 		"data":  data,
 	}, nil
+}
+
+// ReportResponse is model response of GetResponse or => /api/report
+type ReportResponse struct {
+	InstanceID string    `json:"instance_id"`
+	Status     int       `json:"status"`
+	URL        string    `json:"url"`
+	ReportedAt time.Time `json:"reported_at"`
 }
