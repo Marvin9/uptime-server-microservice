@@ -9,7 +9,7 @@ import (
 )
 
 // RemoveInstance will remove instance created by user
-func RemoveInstance(c *gin.Context) {
+func RemoveInstanceAPI(c *gin.Context) {
 	var uniqueInstance models.UniqueInstance
 	ok := uniqueInstance.BindBody(c)
 	if !ok {

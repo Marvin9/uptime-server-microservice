@@ -10,8 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetReport is used to get the server uptimes of particular users => /api/report
-func GetReport(c *gin.Context) {
+// GetReportAPI is used to get the server uptimes of particular users => /api/report
+func GetReportAPI(c *gin.Context) {
 	// extract unique id to find all data of that user from table
 	jwtClaim, err := middlewares.ExtractJWTClaimFromContext(c)
 	if err != nil {

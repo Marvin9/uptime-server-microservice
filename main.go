@@ -44,9 +44,9 @@ func main() {
 				c.JSON(http.StatusOK, models.SuccessResponse(jwtClaim.UniqueID))
 			})
 
-			authorizedGroup.GET("/report", api.GetReport)
-			authorizedGroup.POST("/instance", api.AddInstance)
-			authorizedGroup.DELETE("/instance", api.RemoveInstance)
+			authorizedGroup.GET("/report", api.GetReportAPI)
+			authorizedGroup.POST("/instance", api.AddInstanceAPI)
+			authorizedGroup.DELETE("/instance", api.RemoveInstanceAPI)
 		}
 	}
 

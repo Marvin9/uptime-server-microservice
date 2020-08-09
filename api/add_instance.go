@@ -13,8 +13,8 @@ import (
 
 const instanceDurationLowerBound = time.Hour
 
-// AddInstance is used to add new server monitor => /api/instance
-func AddInstance(c *gin.Context) {
+// AddInstanceAPI is used to add new server monitor => /api/instance
+func AddInstanceAPI(c *gin.Context) {
 	var instance models.Instance
 	ok := instance.BindBody(c)
 	if !ok {
