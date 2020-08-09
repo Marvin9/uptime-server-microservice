@@ -31,6 +31,9 @@ func Action(newInstanceID, url string, t time.Time, status int) {
 
 	// IF THE STATUS FLUCTUATE THEN STORE IT IN DATABASE
 	if latestReport.Status != status {
+		// mailer.Mail([]string{
+		// 	"marvinduff97@gmail.com",
+		// }, fmt.Sprintf("URL: %v\nHTTP Status: %v", url, status))
 		uniqueID, err := utils.GenerateUniqueID()
 		if err != nil {
 			log.Print("Error generating unique id.\n", err)
