@@ -3,6 +3,7 @@ package database
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
 
@@ -35,7 +36,7 @@ func GetReports(userUniqueID string) (int, []models.ReportResponse, error) {
 }
 
 // CreateInstance will create instance in db and return unique id of it.
-func CreateInstance(userUniqueID, url string) (string, error) {
+func CreateInstance(userUniqueID, url string, duration time.Duration) (string, error) {
 	db, err := ConnectDB()
 	defer db.Close()
 	if err != nil {
@@ -50,6 +51,7 @@ func CreateInstance(userUniqueID, url string) (string, error) {
 		UniqueID: instanceUniqueID,
 		Owner:    userUniqueID,
 		URL:      url,
+		Duration: duration,
 	}
 
 	db.Create(&newInstance)

@@ -38,7 +38,7 @@ func AddInstance(c *gin.Context) {
 		return
 	}
 
-	newInstanceID, err := database.CreateInstance(userUniqueID, instance.URL)
+	newInstanceID, err := database.CreateInstance(userUniqueID, instance.URL, instance.Duration)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse("Failed to create new instance"))
 		return
