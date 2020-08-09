@@ -11,7 +11,7 @@ import (
 
 // ConnectDB is used to connect database
 func ConnectDB() (*gorm.DB, error) {
-	db, err := gorm.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=uptime_server_service sslmode=disable", os.Getenv("PSQL_USER"), os.Getenv("PSQL_PASSWORD")))
+	db, err := gorm.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=%v sslmode=disable", os.Getenv("PSQL_USER"), os.Getenv("PSQL_PASSWORD"), os.Getenv("DATABASE_NAME")))
 	if err != nil {
 		return nil, err
 	}
