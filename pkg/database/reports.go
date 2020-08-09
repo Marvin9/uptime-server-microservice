@@ -1,12 +1,24 @@
 package database
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
 )
+
+type schedulerStorage = map[string](map[string](chan bool))
+
+// SchedulerList is all schedulers working
+var SchedulerList = make(schedulerStorage)
+
+// IsInstanceRunning returns true if that instance is already in memory
+func IsInstanceRunning(ownerID, url string) bool {
+	_, ok := SchedulerList[ownerID][url]
+	return ok
+}
 
 // GetReports returns status code, error
 func GetReports(userUniqueID string) (int, []models.ReportResponse, error) {
@@ -43,4 +55,35 @@ func CreateInstance(userUniqueID, url string) (string, error) {
 	db.Create(&newInstance)
 
 	return instanceUniqueID, nil
+}
+
+// RemoveInstance will remove running instance from database and memory
+func RemoveInstance(uniqueInstanceID string) error {
+	db, err := ConnectDB()
+	defer db.Close()
+	if err != nil {
+		return err
+	}
+
+	var instance = models.Instances{
+		UniqueID: uniqueInstanceID,
+	}
+
+	db.Find(&instance)
+	if IsInstanceRunning(instance.Owner, instance.URL) {
+		SchedulerList[instance.Owner][instance.URL] <- true
+		delete(SchedulerList[instance.Owner], instance.URL)
+	}
+
+	err = db.Exec("DELETE FROM instances WHERE unique_id = ?;", uniqueInstanceID).Error
+	if err != nil {
+		log.Println(err)
+	}
+
+	err = db.Exec("DELETE FROM reports WHERE instance_id = ?;", uniqueInstanceID).Error
+	if err != nil {
+		log.Println(err)
+	}
+
+	return nil
 }

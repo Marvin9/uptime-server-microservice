@@ -1,6 +1,7 @@
 package scheduler
 
 import (
+	"fmt"
 	"log"
 	"sync"
 	"time"
@@ -13,13 +14,10 @@ import (
 
 var waitGroup sync.WaitGroup
 
-type schedulerStorage = map[string](map[string](chan bool))
-
-// SchedulerList is all schedulers working
-var SchedulerList = make(schedulerStorage)
-
 // Action will be envoked after certain duration
 func Action(newInstanceID, url string, t time.Time, status int) {
+	fmt.Println("\nAction for instance: ", newInstanceID, ", URL: ", url)
+	fmt.Println()
 	db, err := database.ConnectDB()
 	if err != nil {
 		log.Print("Error connecting database.\n", err)
@@ -53,14 +51,14 @@ func Action(newInstanceID, url string, t time.Time, status int) {
 // InjectScheduler is used to add instance for server monitoring
 func InjectScheduler(newInstanceID, ownerUniqueID, url string, delay time.Duration) bool {
 	waitGroup.Add(1)
-	_, ok := SchedulerList[ownerUniqueID][url]
+	_, ok := database.SchedulerList[ownerUniqueID][url]
 	if !ok {
 		stop := Schedule(newInstanceID, url, delay)
-		_, ook := SchedulerList[ownerUniqueID]
+		_, ook := database.SchedulerList[ownerUniqueID]
 		if !ook {
-			SchedulerList[ownerUniqueID] = make(map[string](chan bool))
+			database.SchedulerList[ownerUniqueID] = make(map[string](chan bool))
 		}
-		SchedulerList[ownerUniqueID][url] = stop
+		database.SchedulerList[ownerUniqueID][url] = stop
 	}
 	return !ok
 }
@@ -91,10 +89,4 @@ func Schedule(newInstanceID, forurl string, delay time.Duration) chan bool {
 	}()
 
 	return stop
-}
-
-// IsInstanceRunning returns true if that instance is already in memory
-func IsInstanceRunning(ownerID, url string) bool {
-	_, ok := SchedulerList[ownerID][url]
-	return ok
 }

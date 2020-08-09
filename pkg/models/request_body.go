@@ -14,15 +14,19 @@ type User struct {
 	Password string `json:"password"`
 }
 
-// BindBody will map post body with User, if not same then it will response Bad request and return false
-func (user *User) BindBody(c *gin.Context) bool {
-	err := c.BindJSON(&user)
+func bindingError(c *gin.Context, err error) bool {
 	if err != nil {
 		log.Print("Error binding json.\n", err)
 		c.JSON(http.StatusBadRequest, ErrorResponse("Invalid request body."))
 		return false
 	}
 	return true
+}
+
+// BindBody will map post body with User, if not same then it will response Bad request and return false
+func (user *User) BindBody(c *gin.Context) bool {
+	err := c.BindJSON(&user)
+	return bindingError(c, err)
 }
 
 // Instance is for /api/instance post body
@@ -34,10 +38,16 @@ type Instance struct {
 // BindBody will map post body with Instance
 func (instance *Instance) BindBody(c *gin.Context) bool {
 	err := c.BindJSON(&instance)
-	if err != nil {
-		log.Print("Error binding json.\n", err)
-		c.JSON(http.StatusBadRequest, ErrorResponse("Invalid request body."))
-		return false
-	}
-	return true
+	return bindingError(c, err)
+}
+
+// UniqueInstance is for /api/instance delete body
+type UniqueInstance struct {
+	InstanceID string `json:"instance_id"`
+}
+
+// BindBody will map delete body with UniqueInstance
+func (instance *UniqueInstance) BindBody(c *gin.Context) bool {
+	err := c.BindJSON(&instance)
+	return bindingError(c, err)
 }

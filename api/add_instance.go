@@ -21,10 +21,10 @@ func AddInstance(c *gin.Context) {
 		return
 	}
 
-	if instance.Duration < instanceDurationLowerBound {
-		c.JSON(http.StatusBadRequest, models.ErrorResponse("Duration must be greater than or equal to 1 hour."))
-		return
-	}
+	// if instance.Duration < instanceDurationLowerBound {
+	// 	c.JSON(http.StatusBadRequest, models.ErrorResponse("Duration must be greater than or equal to 1 hour."))
+	// 	return
+	// }
 
 	jwtClaims, err := middlewares.ExtractJWTClaimFromContext(c)
 	if err != nil {
@@ -33,7 +33,7 @@ func AddInstance(c *gin.Context) {
 	}
 
 	userUniqueID := jwtClaims.UniqueID
-	if scheduler.IsInstanceRunning(userUniqueID, instance.URL) {
+	if database.IsInstanceRunning(userUniqueID, instance.URL) {
 		c.JSON(http.StatusConflict, models.ErrorResponse("There is already one instance for this URL."))
 		return
 	}

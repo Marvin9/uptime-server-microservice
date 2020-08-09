@@ -43,6 +43,7 @@ func main() {
 
 			authorizedGroup.GET("/report", api.GetReport)
 			authorizedGroup.POST("/instance", api.AddInstance)
+			authorizedGroup.DELETE("/instance", api.RemoveInstance)
 		}
 	}
 
