@@ -21,10 +21,10 @@ func AddInstance(c *gin.Context) {
 		return
 	}
 
-	// if instance.Duration < instanceDurationLowerBound {
-	// 	c.JSON(http.StatusBadRequest, models.ErrorResponse("Duration must be greater than or equal to 1 hour."))
-	// 	return
-	// }
+	if instance.Duration < instanceDurationLowerBound {
+		c.JSON(http.StatusBadRequest, models.ErrorResponse("Duration must be greater than or equal to 1 hour."))
+		return
+	}
 
 	jwtClaims, err := middlewares.ExtractJWTClaimFromContext(c)
 	if err != nil {
