@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// RemoveInstance will remove instance created by user
+// RemoveInstanceAPI will remove instance created by user
 func RemoveInstanceAPI(c *gin.Context) {
 	var uniqueInstance models.UniqueInstance
 	ok := uniqueInstance.BindBody(c)

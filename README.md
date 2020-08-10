@@ -63,6 +63,25 @@
         <td>Set monitor for url which will check in duration period and update database accordingly. Reflects in /api/report</td>
     </tr>
     <tr>
+        <td>/api/instances</td>
+        <td>GET</td>
+        <td>
+            -
+        </td>
+        <td>
+            <code>
+                "error": bool,
+                "data": {
+                    "url": string,
+                    "duration": int,
+                    "unique_id": string,
+                } OR
+                "message": "Unauthorized"
+            </code>
+        </td>
+        <td>-</td>
+    </tr>
+    <tr>
         <td>/api/report</td>
         <td>GET</td>
         <td>

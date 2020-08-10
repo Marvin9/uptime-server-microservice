@@ -89,3 +89,17 @@ func RemoveInstance(uniqueInstanceID string) error {
 
 	return nil
 }
+
+// GetInstances will give the current running instances of user
+func GetInstances(userUniqueID string) (int, []models.Instances, error) {
+	db, err := ConnectDB()
+	var instances []models.Instances
+	if err != nil {
+		return http.StatusInternalServerError, instances, err
+	}
+	defer db.Close()
+
+	db.Where("owner = ?", userUniqueID).Order("created_at desc").Find(&instances)
+
+	return http.StatusOK, instances, nil
+}

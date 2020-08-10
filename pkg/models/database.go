@@ -29,7 +29,7 @@ type Reports struct {
 type Instances struct {
 	gorm.Model
 	ID       int           `json:",omitempty"`
-	UniqueID string        `gorm:"primary_key" json:",omitempty"`
+	UniqueID string        `gorm:"primary_key" json:"unique_id,omitempty"`
 	Owner    string        `json:",omitempty"`
 	URL      string        `json:"url"`
 	Duration time.Duration `json:"duration"`
