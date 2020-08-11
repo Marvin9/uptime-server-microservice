@@ -1,4 +1,5 @@
 # Uptime server API
+[![Build Status](https://travis-ci.com/Marvin9/uptime-server-microservice.svg?token=VLAzbJP7VasfzqzWUHz9&branch=master)](https://travis-ci.com/Marvin9/uptime-server-microservice)
 
 > Monitor your server uptime easily.
 
