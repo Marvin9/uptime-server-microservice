@@ -3,16 +3,13 @@ package main
 import (
 	"net/http"
 
-	"github.com/Marvin9/uptime-server-microservice/pkg/database"
-	"github.com/Marvin9/uptime-server-microservice/pkg/scheduler"
-
-	"github.com/Marvin9/uptime-server-microservice/pkg/models"
-
 	"github.com/Marvin9/uptime-server-microservice/api"
 	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
+	"github.com/Marvin9/uptime-server-microservice/pkg/database"
+	"github.com/Marvin9/uptime-server-microservice/pkg/models"
+	"github.com/Marvin9/uptime-server-microservice/pkg/scheduler"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {

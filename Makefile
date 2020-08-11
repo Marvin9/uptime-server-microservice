@@ -1,8 +1,9 @@
+.PHONY: test
 dev:
 	clear && go run main.go
 
 test:
-	clear && go test ./...
+	clear && DATABASE_NAME=uptime_server_service_test go test ./...
 
 build:
 	clear && go build
