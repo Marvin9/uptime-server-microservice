@@ -1,7 +1,14 @@
 language: go
 
+services:
+  - postgresql
+
 before_script:
   - go get -d ./...
+
+env:
+  - PSQL_USER=postgres
+  - PSQL_PASSWORD=
 
 script:
   - make build
