@@ -17,30 +17,40 @@
         <td>/auth/register</td>
         <td>POST</td>
         <td>
-            <code>
+            <pre>
+            {
                 "email": string,
                 "password": string,
-            </code>
+            }
+            </pre>
         </td>
         <td>
-            <code>
+            <pre>
+            {
                 "email": bool,
                 "password": string,
-            </code>
+            }
+            </pre>
         </td>
     </tr>
     <tr>
         <td>/auth/login</td>
         <td>POST</td>
-        <td><code>
-        "email": string,
-        "password": string
-        </code></td>
         <td>
-        <code>
-        "error": bool,
-        "message": string
-        </code>
+            <pre>
+            {
+                "email": string,
+                "password": string
+            }   
+            </pre>
+        </td>
+        <td>
+        <pre>
+        {
+            "error": bool,
+            "message": string
+        }
+        </pre>
         </td>
         <td>
             Set jsonwebtoken in http cookie with expiration time of 30 minutes.
@@ -50,16 +60,20 @@
         <td>/api/instance</td>
         <td>POST</td>
         <td>
-            <code>
+            <pre>
+            {
                 "url": string,
                 "duration": int (time in nanoseconds)
-            </code>
+            }
+            </pree>
         </td>
         <td>
-            <code>
+            <pre>
+            {
                 "error": bool,
                 "message": string
-            </code>
+            }
+            </pre>
         </td>
         <td>Set monitor for url which will check in duration period and update database accordingly. Reflects in /api/report</td>
     </tr>
@@ -70,15 +84,16 @@
             -
         </td>
         <td>
-            <code>
+            <pre>
+            {
                 "error": bool,
                 "data": {
                     "url": string,
                     "duration": int,
                     "unique_id": string,
-                } OR
-                "message": "Unauthorized"
-            </code>
+                } || "message": "Unauthorized"
+            }
+            </pre>
         </td>
         <td>-</td>
     </tr>
@@ -89,16 +104,17 @@
             -
         </td>
         <td>
-            <code>
+            <pre>
+            {
                 "error": bool,
                 "data": {
                     "url": string,
                     "status": int,
                     "reported_at": time,
                     "instance_id": string,
-                } OR
-                "message": "Unauthorized"
-            </code>
+                } || "message": "Unauthorized"
+            }
+            </pre>
         </td>
         <td>-</td>
     </tr>
@@ -106,15 +122,19 @@
         <td>/api/instance</td>
         <td>DELETE</td>
         <td>
-            <code>
+            <pre>
+            {
                 "instance_id": string,
-            </code>
+            }
+            </pre>
         </td>
         <td>
-            <code>
+            <pre>
+            {
                 "error": bool,
                 "message": string
-            </code>
+            }
+            </pre>
         </td>
         <td>-</td>
     </tr>
