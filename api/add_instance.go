@@ -44,7 +44,13 @@ func AddInstanceAPI(c *gin.Context) {
 		return
 	}
 
-	scheduler.InjectScheduler(newInstanceID, userUniqueID, instance.URL, instance.Duration)
+	statusCode, userEmail, err := database.GetUserEmail(userUniqueID)
+	if err != nil {
+		c.JSON(statusCode, models.ErrorResponse("Error creating instance. Try again."))
+		return
+	}
+
+	go scheduler.InjectScheduler(newInstanceID, userUniqueID, userEmail, instance.URL, instance.Duration)
 
 	c.JSON(http.StatusOK, models.SuccessResponse("Successfully added instance."))
 }

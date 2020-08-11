@@ -82,3 +82,17 @@ func LoginUser(email, password string) (int, string, error) {
 
 	return http.StatusOK, jwtTokenString, nil
 }
+
+// GetUserEmail will return email of corresponding user
+func GetUserEmail(userUniqueID string) (int, string, error) {
+	db, err := ConnectDB()
+	if err != nil {
+		return http.StatusInternalServerError, "", err
+	}
+	defer db.Close()
+
+	var user models.Users
+	db.Where("unique_id = ?", userUniqueID).Find(&user)
+
+	return http.StatusOK, user.Email, nil
+}

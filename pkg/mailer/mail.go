@@ -2,25 +2,38 @@ package mailer
 
 import (
 	"fmt"
-	"net/smtp"
+	"log"
 	"os"
+	"time"
+
+	"github.com/sendgrid/sendgrid-go"
+
+	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
 
-var from = "mayursiinh@gmail.com"
-var password = os.Getenv("EMAIL_PASSWORD")
-var smtpHost = "smtp.gmail.com"
-var smtpPort = "587"
+const (
+	fromName  = "Server Monitor"
+	fromEmail = "test@example.com"
+	subject   = "Report"
+)
+
+func generateBody(forURL string, status int, at time.Time) string {
+	body := fmt.Sprintf("For <b>%v</b>,<br /> Status at: %v <br />was <b>%v</b>", forURL, at, status)
+	return body
+}
 
 // Mail is used to send emails
-func Mail(to []string, message string) error {
-	auth := smtp.PlainAuth("", from, password, smtpHost)
-
-	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, []byte(message))
+func Mail(to string, forURL string, status int, at time.Time) error {
+	from := mail.NewEmail(fromName, fromEmail)
+	toS := mail.NewEmail("", to)
+	body := generateBody(forURL, status, at)
+	message := mail.NewSingleEmail(from, "Report", toS, "Report.\n", body)
+	client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
+	_, err := client.Send(message)
 
 	if err != nil {
-		fmt.Printf("\nError sending mail: %v", err)
-		return err
+		log.Printf("Error sending mail %v\n\n.", err)
 	}
 
-	return nil
+	return err
 }
