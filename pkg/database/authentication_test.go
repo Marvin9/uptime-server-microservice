@@ -43,3 +43,39 @@ func TestRegisterUser(t *testing.T) {
 		t.Errorf("Email was already registered, expected %v as status code, got %v", http.StatusConflict, statusCode)
 	}
 }
+
+func TestLoginUser(t *testing.T) {
+	test.FakeDB(test.CREATE)
+	defer test.FakeDB(test.DROP)
+
+	db, err := database.ConnectDB()
+	if err != nil {
+		t.Errorf("Error connecting database.\n%v", err)
+	}
+	defer db.Close()
+	db.AutoMigrate(&models.Users{})
+
+	email := "abc"
+	password := "abc"
+	wrongPassword := "abcd"
+
+	statusCode, _, _ := database.LoginUser(email, password)
+	if statusCode != http.StatusNotFound {
+		t.Errorf("Expected unregistered email to be not found %v, but got %v", http.StatusNotFound, statusCode)
+	}
+
+	_, err = database.RegisterUser(email, password)
+	if err != nil {
+		t.Errorf("Error registering user.\n%v", err)
+	}
+
+	statusCode, _, err = database.LoginUser(email, password)
+	if statusCode != http.StatusOK {
+		t.Errorf("Could not login with correct credentials.\n%v", err)
+	}
+
+	statusCode, _, err = database.LoginUser(email, wrongPassword)
+	if statusCode != http.StatusUnauthorized {
+		t.Errorf("Expected status for wrong password was %v, but got %v", http.StatusUnauthorized, statusCode)
+	}
+}
