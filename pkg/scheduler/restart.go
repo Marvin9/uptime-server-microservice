@@ -20,7 +20,11 @@ func RestartAllSchedulers() {
 		db.Find(&instances)
 
 		for _, instance := range instances {
-			_, userEmail, _ := database.GetUserEmail(instance.Owner)
+			_, userEmail, err := database.GetUserEmail(instance.Owner)
+			if err != nil {
+				log.Printf("Skipped scheduler for instance %v.", instance.Owner)
+				continue
+			}
 			go InjectScheduler(instance.UniqueID, instance.Owner, userEmail, instance.URL, instance.Duration)
 		}
 
