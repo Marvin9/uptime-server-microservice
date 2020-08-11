@@ -7,8 +7,9 @@ before_script:
   - go get -d ./...
 
 env:
-  - PSQL_USER=postgres
-  - PSQL_PASSWORD=
+  global:
+    - PSQL_USER=postgres
+    - PSQL_PASSWORD=
 
 script:
   - make build
