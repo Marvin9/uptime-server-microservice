@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"runtime"
 
 	"github.com/joho/godotenv"
 )
@@ -19,7 +21,12 @@ const (
 
 // FakeDB is used in unit tests to mock db
 func FakeDB(operation string) {
-	godotenv.Load("../../.env")
+	_, fileName, _, _ := runtime.Caller(0)
+	pathP := filepath.Dir(fileName)
+	err := godotenv.Load(pathP + "/../.env")
+	if err != nil {
+		fmt.Printf("Erro loading env.\n%v\n\n", err)
+	}
 	dbname := os.Getenv("DATABASE_NAME")
 	postgreUser := os.Getenv("PSQL_USER")
 	postgrePassword := os.Getenv("PSQL_PASSWORD")
