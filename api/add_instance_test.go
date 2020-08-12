@@ -31,22 +31,13 @@ func TestAddInstanceAPI(t *testing.T) {
 	defer db.Close()
 	db.AutoMigrate(&models.Users{}, &models.Instances{}, &models.Reports{})
 
-	credentials := []byte(`{ "email": "mayursiinh@gmail.com", "password": "abc" }`)
-	register := test.SimulationData{
-		Method:             "POST",
-		API:                "/auth/register",
-		Body:               credentials,
-		ExpectedStatusCode: http.StatusOK,
-		ErrorMessage:       "Error while registering.",
-	}
-
 	router := setup.Router()
-	test.SimulateAPI(t, router, register)
 
-	_, jwtToken, err := database.LoginUser("mayursiinh@gmail.com", "abc")
+	jwtToken, err := generateLogInCookie("mayursiinh@gmail.com", "abc")
 	if err != nil {
-		t.Errorf("Error logging in.\n%v", err)
+		t.Errorf("Error generating login cookie.\n%v", err)
 	}
+
 	cookie := http.Cookie{
 		Name:  middlewares.JWTCookieName,
 		Value: jwtToken,
