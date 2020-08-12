@@ -34,7 +34,7 @@ func TestGetInstance(t *testing.T) {
 
 	router := setup.Router()
 
-	jwtToken, err := generateLogInCookie("mayursiinh@gmail.com", "abc")
+	jwtToken, err := generateLogInCookie("mayursinh@gmail.com", "abc")
 	if err != nil {
 		t.Errorf("Error generating login cookie.\n%v", err)
 	}
