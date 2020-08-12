@@ -5,6 +5,9 @@ dev:
 test:
 	clear && DATABASE_NAME=uptime_server_service_test go test ./...
 
+verbose_test:
+	clear && DATABASE_NAME=uptime_server_service_test go test ./... -v
+
 build:
 	clear && go build
 
