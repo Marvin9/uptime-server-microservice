@@ -52,5 +52,6 @@ func AddInstanceAPI(c *gin.Context) {
 
 	go scheduler.InjectScheduler(newInstanceID, userUniqueID, userEmail, instance.URL, instance.Duration)
 
-	c.JSON(http.StatusOK, models.SuccessResponse("Successfully added instance."))
+	response, _ := models.SuccessResponseWithData(newInstanceID)
+	c.JSON(http.StatusOK, response)
 }

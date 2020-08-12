@@ -71,7 +71,7 @@
             <pre>
             {
                 "error": bool,
-                "message": string
+                "data": string
             }
             </pre>
         </td>
