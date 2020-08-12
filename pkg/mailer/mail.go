@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/sendgrid/sendgrid-go"
@@ -24,6 +25,9 @@ func generateBody(forURL string, status int, at time.Time) string {
 
 // Mail is used to send emails
 func Mail(to string, forURL string, status int, at time.Time) error {
+	if strings.HasSuffix(os.Args[0], ".test") {
+		return nil
+	}
 	from := mail.NewEmail(fromName, fromEmail)
 	toS := mail.NewEmail("", to)
 	body := generateBody(forURL, status, at)
