@@ -22,7 +22,7 @@ func TestInstanceCRUD(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error connecting database\n.%v", err)
 	}
-	db.AutoMigrate(&models.Instances{})
+	db.AutoMigrate(&models.Instances{}, &models.Reports{})
 	defer db.Close()
 
 	newInstanceID, err := database.CreateInstance(userUniqueID, url, duration)
