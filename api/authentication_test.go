@@ -83,3 +83,16 @@ func TestAuthenticationAPI(t *testing.T) {
 		test.SimulateAPI(t, router, sim)
 	}
 }
+
+func generateLogInCookie(email, password string) (string, error) {
+	_, err := database.RegisterUser(email, password)
+	if err != nil {
+		return "", err
+	}
+
+	_, jwtToken, err := database.LoginUser(email, password)
+	if err != nil {
+		return "", err
+	}
+	return jwtToken, nil
+}
