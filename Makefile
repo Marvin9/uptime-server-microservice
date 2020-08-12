@@ -1,4 +1,4 @@
-.PHONY: test
+.PHONY: test verbose_test
 dev:
 	clear && go run main.go
 
