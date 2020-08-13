@@ -3,12 +3,13 @@ package api_test
 import (
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
 	"github.com/Marvin9/uptime-server-microservice/api/setup"
 	"github.com/Marvin9/uptime-server-microservice/pkg/database"
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
+	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
+	"github.com/dgrijalva/jwt-go"
 
 	"github.com/Marvin9/uptime-server-microservice/test"
 )
@@ -26,6 +27,10 @@ func TestRemoveInstanceAPI(t *testing.T) {
 
 	router := setup.Router()
 	jwtToken, err := generateLogInCookie("m@gmail.com", "abc")
+	jwtClaims := &models.Claims{}
+	jwt.ParseWithClaims(jwtToken, jwtClaims, func(token *jwt.Token) (interface{}, error) {
+		return utils.GetJWTKey(), nil
+	})
 	if err != nil {
 		t.Errorf("Error generating login cookie.")
 	}
@@ -44,10 +49,8 @@ func TestRemoveInstanceAPI(t *testing.T) {
 	}
 	test.SimulateAPI(t, router, addInstance)
 
-	time.Sleep(time.Millisecond * 500)
-
 	var instances []models.Instances
-	db.Find(&instances)
+	db.Where("owner = ?", jwtClaims.UniqueID).Find(&instances)
 
 	if len(instances) != 1 {
 		t.Errorf("Instance was not added in database.\n")
@@ -59,11 +62,9 @@ func TestRemoveInstanceAPI(t *testing.T) {
 	removeInstance.ErrorMessage = "Error removing instance."
 	test.SimulateAPI(t, router, removeInstance)
 
-	time.Sleep(time.Millisecond * 500)
-
 	prevInstance := instances[0]
 	instances = []models.Instances{}
-	db.Find(&instances)
+	db.Where("owner = ?", jwtClaims.UniqueID).Find(&instances)
 
 	if len(instances) != 0 {
 		t.Errorf("Instance was not removed from database.\n")
