@@ -3,6 +3,7 @@ package api_test
 import (
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
 	"github.com/Marvin9/uptime-server-microservice/api/setup"
@@ -43,6 +44,8 @@ func TestRemoveInstanceAPI(t *testing.T) {
 	}
 	test.SimulateAPI(t, router, addInstance)
 
+	time.Sleep(time.Millisecond * 500)
+
 	var instances []models.Instances
 	db.Find(&instances)
 
@@ -55,6 +58,8 @@ func TestRemoveInstanceAPI(t *testing.T) {
 	removeInstance.Body = []byte(`{ "instance_id" : "` + instances[0].UniqueID + `" }`)
 	removeInstance.ErrorMessage = "Error removing instance."
 	test.SimulateAPI(t, router, removeInstance)
+
+	time.Sleep(time.Millisecond * 500)
 
 	prevInstance := instances[0]
 	instances = []models.Instances{}
