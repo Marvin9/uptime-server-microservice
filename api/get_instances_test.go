@@ -45,7 +45,7 @@ func TestGetInstance(t *testing.T) {
 	}
 
 	instanceBodies := [][]byte{
-		[]byte(`{ "url": "https://www.flipkart.in", "duration": 3600000000000 }`),
+		[]byte(`{ "url": "https://www.flipkart.com", "duration": 3600000000000 }`),
 		[]byte(`{ "url": "https://www.google.com", "duration":  3600000000000 }`),
 	}
 
