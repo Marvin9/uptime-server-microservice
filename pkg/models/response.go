@@ -46,3 +46,8 @@ type ReportResponse struct {
 	URL        string    `json:"url"`
 	ReportedAt time.Time `json:"reported_at"`
 }
+
+// PingResponse is model response of /auth/ping
+type PingResponse struct {
+	Email string `json:"email"`
+}
