@@ -17,6 +17,11 @@ func Router() *gin.Engine {
 	{
 		authenticationGroup.POST("/register", api.RegisterAPI)
 		authenticationGroup.POST("/login", api.LoginAPI)
+
+		authenticationGroup.Use(middlewares.IsAuthorized())
+		{
+			authenticationGroup.GET("/ping", api.IsAuthenticatedAPI)
+		}
 	}
 
 	authorizedGroup := r.Group("/api")
