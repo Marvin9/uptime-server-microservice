@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
@@ -24,6 +25,7 @@ func IsAuthorized() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		jwtCookie, err := c.Cookie(JWTCookieName)
 		if err != nil {
+			log.Printf("\n\nNo cookie found.\nError: %v\n\n", err)
 			c.JSON(http.StatusUnauthorized, models.ErrorResponse(unauthorized))
 			c.Abort()
 			return
