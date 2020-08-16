@@ -40,6 +40,7 @@ func IsAuthorized() gin.HandlerFunc {
 		})
 
 		if err != nil || !signedToken.Valid {
+			log.Printf("Cannot parse token.\n\n%v", err)
 			c.JSON(http.StatusUnauthorized, models.ErrorResponse(unauthorized))
 			c.Abort()
 			return
