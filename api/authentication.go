@@ -57,6 +57,6 @@ func LoginAPI(c *gin.Context) {
 
 // LogoutAPI will remove cookie
 func LogoutAPI(c *gin.Context) {
-	c.SetCookie(middlewares.JWTCookieName, "", int(utils.JWTCookieExpireAfter), "/", "localhost", false, true)
+	c.SetCookie(middlewares.JWTCookieName, "", int(utils.JWTCookieExpireAfter), "/", "", false, true)
 	c.JSON(http.StatusOK, models.SuccessResponse("Logged out successfully."))
 }
