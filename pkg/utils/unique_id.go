@@ -6,10 +6,7 @@ import (
 
 // GenerateUniqueID returns unique string to store as unique field in database
 func GenerateUniqueID() (string, error) {
-	id, err := uuid.NewV4()
-	if err != nil {
-		return "", err
-	}
+	id := uuid.NewV4()
 
 	return id.String(), nil
 }
