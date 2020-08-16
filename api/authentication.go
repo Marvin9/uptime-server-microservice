@@ -2,6 +2,7 @@ package api
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
 	"github.com/Marvin9/uptime-server-microservice/pkg/utils"
@@ -52,4 +53,10 @@ func LoginAPI(c *gin.Context) {
 	// c.SetSameSite(http.SameSiteNoneMode)
 	c.SetCookie(middlewares.JWTCookieName, jwtToken, int(utils.JWTCookieExpireAfter), "/", "localhost", false, true)
 	c.JSON(statusCode, models.SuccessResponse("Successfully logged in."))
+}
+
+// LogoutAPI will remove cookie
+func LogoutAPI(c *gin.Context) {
+	c.SetCookie(middlewares.JWTCookieName, "", int(utils.JWTCookieExpireAfter), "/", "localhost", false, true)
+	c.JSON(http.StatusOK, models.SuccessResponse("Logged out successfully."))
 }

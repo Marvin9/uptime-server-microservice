@@ -24,6 +24,7 @@ func Router() *gin.Engine {
 	{
 		authenticationGroup.POST("/register", api.RegisterAPI)
 		authenticationGroup.POST("/login", api.LoginAPI)
+		authenticationGroup.POST("/logout", api.LogoutAPI)
 
 		authenticationGroup.Use(middlewares.IsAuthorized())
 		{
