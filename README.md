@@ -17,63 +17,79 @@
         <td>/auth/register</td>
         <td>POST</td>
         <td>
-            <pre>
+            <code>
             {
                 "email": string,
                 "password": string,
             }
-            </pre>
+            </code>
         </td>
         <td>
-            <pre>
+            <code>
             {
                 "email": bool,
                 "password": string,
             }
-            </pre>
+            </code>
         </td>
     </tr>
     <tr>
         <td>/auth/login</td>
         <td>POST</td>
         <td>
-            <pre>
+            <code>
             {
                 "email": string,
                 "password": string
             }   
-            </pre>
+            </code>
         </td>
         <td>
-        <pre>
+        <code>
         {
             "error": bool,
             "message": string
         }
-        </pre>
+        </code>
         </td>
         <td>
             Set jsonwebtoken in http cookie with expiration time of 30 minutes.
         </td>
     </tr>
     <tr>
+        <td>/auth/ping</td>
+        <td>GET</td>
+        <td>-</td>
+        <td>
+            <code>
+            {
+                "email": string,
+            } || 
+            {
+                "error": boolean,
+                "message": string.
+            }
+            </code>
+        </td>
+    </tr>
+    <tr>
         <td>/api/instance</td>
         <td>POST</td>
         <td>
-            <pre>
+            <code>
             {
                 "url": string,
                 "duration": int (time in nanoseconds)
             }
-            </pree>
+            </code>
         </td>
         <td>
-            <pre>
+            <code>
             {
                 "error": bool,
                 "data": string
             }
-            </pre>
+            </code>
         </td>
         <td>Set monitor for url which will check in duration period and update database accordingly. Reflects in /api/report</td>
     </tr>
@@ -84,7 +100,7 @@
             -
         </td>
         <td>
-            <pre>
+            <code>
             {
                 "error": bool,
                 "data": {
@@ -93,7 +109,7 @@
                     "unique_id": string,
                 } || "message": "Unauthorized"
             }
-            </pre>
+            </code>
         </td>
         <td>-</td>
     </tr>
@@ -104,7 +120,7 @@
             -
         </td>
         <td>
-            <pre>
+            <code>
             {
                 "error": bool,
                 "data": {
@@ -114,7 +130,7 @@
                     "instance_id": string,
                 } || "message": "Unauthorized"
             }
-            </pre>
+            </code>
         </td>
         <td>-</td>
     </tr>
@@ -122,19 +138,19 @@
         <td>/api/instance</td>
         <td>DELETE</td>
         <td>
-            <pre>
+            <code>
             {
                 "instance_id": string,
             }
-            </pre>
+            </code>
         </td>
         <td>
-            <pre>
+            <code>
             {
                 "error": bool,
                 "message": string
             }
-            </pre>
+            </code>
         </td>
         <td>-</td>
     </tr>
