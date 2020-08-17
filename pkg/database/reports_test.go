@@ -18,7 +18,7 @@ func TestInstanceCRUD(t *testing.T) {
 	url := "https://www.google.com"
 	duration := time.Hour
 
-	db, err := database.ConnectDB()
+	db, err := test.RetryConnection()
 	if err != nil {
 		t.Errorf("Error connecting database\n.%v", err)
 	}

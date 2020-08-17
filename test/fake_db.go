@@ -2,12 +2,16 @@ package test
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
+
+	"github.com/Marvin9/uptime-server-microservice/pkg/database"
+	"github.com/jinzhu/gorm"
 
 	"github.com/joho/godotenv"
 )
@@ -55,4 +59,19 @@ func FakeDB(operation string) {
 	}
 
 	// log.Printf("Output: %v", out.String())
+}
+
+// RetryConnection retry of db connections
+func RetryConnection() (*gorm.DB, error) {
+	try := 10
+	start := 0
+	var db *gorm.DB
+	var err error
+	for db, err = database.ConnectDB(); err != nil && start <= 10; start++ {
+	}
+	if start > try {
+		errMsg := fmt.Sprintf("Cannot connect even after %v try.", try)
+		return nil, errors.New(errMsg)
+	}
+	return db, nil
 }

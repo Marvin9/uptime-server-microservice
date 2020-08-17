@@ -1,6 +1,7 @@
 package database
 
 import (
+	"log"
 	"os"
 
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
@@ -12,6 +13,7 @@ import (
 func ConnectDB() (*gorm.DB, error) {
 	db, err := gorm.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
+		log.Printf("Inside ConnectDB: %v\n\n", err)
 		return nil, err
 	}
 

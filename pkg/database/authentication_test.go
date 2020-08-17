@@ -16,7 +16,7 @@ func TestRegisterUser(t *testing.T) {
 	defer test.FakeDB(test.DROP)
 	email := "test"
 	password := "testt"
-	db, err := database.ConnectDB()
+	db, err := test.RetryConnection()
 	if err != nil {
 		t.Errorf("Error connecting database.\n%v", err)
 	}
@@ -48,7 +48,7 @@ func TestLoginUser(t *testing.T) {
 	test.FakeDB(test.CREATE)
 	defer test.FakeDB(test.DROP)
 
-	db, err := database.ConnectDB()
+	db, err := test.RetryConnection()
 	if err != nil {
 		t.Errorf("Error connecting database.\n%v", err)
 	}

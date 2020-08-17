@@ -22,7 +22,7 @@ func TestAuthenticationAPI(t *testing.T) {
 	test.FakeDB(test.CREATE)
 	defer test.FakeDB(test.DROP)
 
-	db, err := database.ConnectDB()
+	db, err := test.RetryConnection()
 	if err != nil {
 		t.Errorf("Error connecting database.\n%v\n", err)
 	}
