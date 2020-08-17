@@ -17,6 +17,7 @@ func Router() *gin.Engine {
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3000"}
 	config.AllowCredentials = true
+	config.AllowHeaders = []string{"Content-Type", "*"}
 
 	r.Use(cors.New(config))
 
