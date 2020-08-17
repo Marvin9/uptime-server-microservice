@@ -3,7 +3,7 @@ dev:
 	clear && go run main.go
 
 test:
-	clear && go test ./...
+	clear && GIN_MODE=release go test ./...
 
 verbose_test:
 	clear && DATABASE_NAME=uptime_server_service_test go test ./... -v

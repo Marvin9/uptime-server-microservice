@@ -28,6 +28,7 @@ func Mail(to string, forURL string, status int, at time.Time) error {
 	if strings.HasSuffix(os.Args[0], ".test") {
 		return nil
 	}
+	log.Printf("Sending mail to %v\n\n", to)
 	from := mail.NewEmail(fromName, fromEmail)
 	toS := mail.NewEmail("", to)
 	body := generateBody(forURL, status, at)

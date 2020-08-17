@@ -1,6 +1,7 @@
 package setup
 
 import (
+	"flag"
 	"net/http"
 
 	"github.com/Marvin9/uptime-server-microservice/api"
@@ -16,6 +17,9 @@ func Router() *gin.Engine {
 	r := gin.Default()
 
 	config := cors.DefaultConfig()
+	if flag.Lookup("test.v") != nil {
+		config.AllowAllOrigins = true
+	}
 	config.AllowCredentials = true
 
 	r.Use(cors.New(config))

@@ -55,7 +55,7 @@ func TestGetReport(t *testing.T) {
 	test.SimulateAPI(t, router, addInstance)
 
 	// wait until report is added, because that process uses goroutine
-	time.Sleep(time.Millisecond * 500)
+	time.Sleep(time.Millisecond * 1000)
 
 	getReports := test.SimulationData{
 		Method:             "GET",
@@ -78,7 +78,7 @@ func TestGetReport(t *testing.T) {
 	addInstance.Body = []byte(`{ "url": "https://www.yahoo.com", "duration": 3600000000000 }`)
 	test.SimulateAPI(t, router, addInstance)
 
-	time.Sleep(time.Second * 1)
+	time.Sleep(time.Second * 5)
 
 	response = test.SimulateAPI(t, router, getReports)
 	buf, _ = ioutil.ReadAll(response.Body)

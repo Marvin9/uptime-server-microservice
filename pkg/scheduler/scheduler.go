@@ -33,7 +33,6 @@ func Action(newInstanceID, userEmail, url string, t time.Time, status int) {
 
 	// IF THE STATUS FLUCTUATE THEN STORE IT IN DATABASE
 	if latestReport.Status != status {
-		log.Printf("Sending mail to %v\n\n", userEmail)
 		go mailer.Mail(userEmail, url, status, t)
 		uniqueID, err := utils.GenerateUniqueID()
 		if err != nil {
