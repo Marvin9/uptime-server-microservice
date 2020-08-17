@@ -77,7 +77,7 @@ func TestGetReport(t *testing.T) {
 	addInstance.Body = []byte(`{ "url": "https://www.yahoo.com", "duration": 3600000000000 }`)
 	test.SimulateAPI(t, router, addInstance)
 
-	time.Sleep(time.Second * 5)
+	time.Sleep(time.Second * 10)
 
 	response = test.SimulateAPI(t, router, getReports)
 	buf, _ = ioutil.ReadAll(response.Body)
