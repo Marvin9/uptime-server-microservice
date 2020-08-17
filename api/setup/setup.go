@@ -3,6 +3,7 @@ package setup
 import (
 	"flag"
 	"net/http"
+	"os"
 
 	"github.com/Marvin9/uptime-server-microservice/api"
 	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
@@ -19,12 +20,14 @@ func Router() *gin.Engine {
 	config := cors.DefaultConfig()
 	if flag.Lookup("test.v") != nil {
 		config.AllowAllOrigins = true
+	} else {
+		config.AllowOrigins = []string{os.Getenv("ALLOW_ORIGIN")}
 	}
 	config.AllowCredentials = true
 
 	r.Use(cors.New(config))
 
-	r.Use(static.Serve("/", static.LocalFile("./client/dist", true)))
+	r.Use(static.Serve("/", static.LocalFile("./client", true)))
 
 	authenticationGroup := r.Group("/auth")
 	{
