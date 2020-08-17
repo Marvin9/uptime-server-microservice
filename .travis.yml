@@ -10,6 +10,8 @@ env:
   global:
     - PSQL_USER=postgres
     - PSQL_PASSWORD=
+    - DATABASE_URL=postgres://postgres@localhost:5432/uptime_server_service_test
+    - DATABASE_NAME=uptime_server_service_test
 
 script:
   - make build

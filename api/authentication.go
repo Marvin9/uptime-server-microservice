@@ -50,8 +50,8 @@ func LoginAPI(c *gin.Context) {
 
 	log.Printf("\n\nCookie expiration time: %v", int(utils.JWTCookieExpireAfter))
 
-	c.SetSameSite(4)
-	c.SetCookie(middlewares.JWTCookieName, jwtToken, int(utils.JWTCookieExpireAfter), "/", "", false, true)
+	// c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie(middlewares.JWTCookieName, jwtToken, int(utils.JWTCookieExpireAfter), "/", "localhost", false, true)
 	c.JSON(statusCode, models.SuccessResponse("Successfully logged in."))
 }
 
