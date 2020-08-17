@@ -53,6 +53,7 @@ func FakeDB(operation string) {
 		if operation == CREATE {
 			log.Printf("Database is there while creating..\n\n")
 			FakeDB(DROP)
+			FakeDB(CREATE)
 		}
 		log.Printf("%v\n", message)
 		log.Println(err)

@@ -11,7 +11,8 @@ import (
 
 // ConnectDB is used to connect database
 func ConnectDB() (*gorm.DB, error) {
-	db, err := gorm.Open("postgres", os.Getenv("DATABASE_URL"))
+	databaseURL := os.Getenv("DATABASE_URL")
+	db, err := gorm.Open("postgres", databaseURL)
 	if err != nil {
 		log.Printf("Inside ConnectDB: %v\n\n", err)
 		return nil, err
