@@ -7,6 +7,7 @@ import (
 	"github.com/Marvin9/uptime-server-microservice/api/middlewares"
 	"github.com/Marvin9/uptime-server-microservice/pkg/models"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,11 +16,11 @@ func Router() *gin.Engine {
 	r := gin.Default()
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"https://uptime-server-01.herokuapp.com"}
 	config.AllowCredentials = true
-	config.AllowHeaders = []string{"Content-Type", "*"}
 
 	r.Use(cors.New(config))
+
+	r.Use(static.Serve("/", static.LocalFile("./client/dist", true)))
 
 	authenticationGroup := r.Group("/auth")
 	{
