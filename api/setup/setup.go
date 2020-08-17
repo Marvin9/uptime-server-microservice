@@ -15,7 +15,7 @@ func Router() *gin.Engine {
 	r := gin.Default()
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowOrigins = []string{"https://uptime-server-01.herokuapp.com/"}
 	config.AllowCredentials = true
 	config.AllowHeaders = []string{"Content-Type", "*"}
 
