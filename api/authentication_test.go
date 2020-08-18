@@ -39,8 +39,10 @@ func TestAuthenticationAPI(t *testing.T) {
 		test.ResponseError(t, fmt.Sprintf("%v should not accept empty body.", registerAPI), http.StatusBadRequest, w.Code, w.Body)
 	}
 
-	jsonVal := []byte(`{ "email": "marvinduff97@gmail.com", "password": "abc" }`)
-	wrongJsonValPassword := []byte(`{ "email": "marvinduff97@gmail.com", "password": "abcd" }`)
+	credentials := test.GenerateFakeCredentials()
+
+	jsonVal := []byte(`{ "email": "` + credentials.Email + `", "password": "` + credentials.Password + `" }`)
+	wrongJsonValPassword := []byte(`{ "email": "` + credentials.Email + `", "password": "` + credentials.Password + `1" }`)
 	var simulation = []test.SimulationData{
 		test.SimulationData{
 			Method:             "POST",

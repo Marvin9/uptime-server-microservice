@@ -26,7 +26,10 @@ func TestRemoveInstanceAPI(t *testing.T) {
 	db.AutoMigrate(&models.Users{}, &models.Instances{}, &models.Reports{})
 
 	router := setup.Router()
-	jwtToken, err := generateLogInCookie("m@gmail.com", "abc")
+
+	credentials := test.GenerateFakeCredentials()
+
+	jwtToken, err := generateLogInCookie(credentials.Email, credentials.Password)
 	jwtClaims := &models.Claims{}
 	jwt.ParseWithClaims(jwtToken, jwtClaims, func(token *jwt.Token) (interface{}, error) {
 		return utils.GetJWTKey(), nil

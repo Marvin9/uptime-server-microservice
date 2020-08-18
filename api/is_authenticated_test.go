@@ -37,7 +37,9 @@ func TestIsAuthenticatedAPI(t *testing.T) {
 
 	test.SimulateAPI(t, router, pingAuth)
 
-	jwtToken, _ := generateLogInCookie("abc@gmail.com", "abc")
+	credentials := test.GenerateFakeCredentials()
+
+	jwtToken, _ := generateLogInCookie(credentials.Email, credentials.Password)
 	cookie := http.Cookie{
 		Name:  middlewares.JWTCookieName,
 		Value: jwtToken,

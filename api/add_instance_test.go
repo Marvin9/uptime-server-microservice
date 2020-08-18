@@ -33,7 +33,9 @@ func TestAddInstanceAPI(t *testing.T) {
 
 	router := setup.Router()
 
-	jwtToken, err := generateLogInCookie("mayursiinh@gmail.com", "abc")
+	credentials := test.GenerateFakeCredentials()
+
+	jwtToken, err := generateLogInCookie(credentials.Email, credentials.Password)
 	if err != nil {
 		t.Errorf("Error generating login cookie.\n%v", err)
 	}

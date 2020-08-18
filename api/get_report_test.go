@@ -34,7 +34,10 @@ func TestGetReport(t *testing.T) {
 	db.AutoMigrate(&models.Users{}, &models.Instances{}, &models.Reports{})
 
 	router := setup.Router()
-	jwtToken, err := generateLogInCookie("mayur@gmail.com", "abc")
+
+	credentials := test.GenerateFakeCredentials()
+
+	jwtToken, err := generateLogInCookie(credentials.Email, credentials.Password)
 	if err != nil {
 		t.Errorf("Error generating login cookie.\n%v", err)
 	}
