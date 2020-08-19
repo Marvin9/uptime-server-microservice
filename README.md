@@ -3,6 +3,40 @@
 
 > Monitor your server uptime easily.
 
+## Run locally.
+
+- Download dependencies.
+
+    ```go mod download```
+
+- Setup environment variables in ```.env``` file.
+
+    - ```PSQL_USER:postgres```
+    - ```PSQL_PASSWORD:password```
+    - ```DATABASE_NAME:uptime_server_service```
+    - ```DATABASE_URL:postgres://postgres@localhost:5432/uptime_server_service```
+    - ```JWT_KEY:secret_key```
+    - ```SENDGRID_API_KEY:your_sendgrid_api_key```
+    - ```COOKIE_DOMAIN:localhost```
+    - ```ALLOW_ORIGIN:http://localhost:3000```
+
+    > NOTE: Update DATABASE_NAME & DATABASE_URL before running tests.
+
+- Run.
+
+    ```make dev``` 
+    
+    OR 
+    
+    ```go run main.go```
+
+- Test.
+
+    ```make test```
+
+    ```make verbose_test``` to debug tests.
+
+
 ## API
 
 <table>
