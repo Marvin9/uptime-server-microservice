@@ -9,7 +9,7 @@ import (
 func GetStatus(url string) (int, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("%v\n", err)
 		return -1, err
 	}
 	return resp.StatusCode, nil
