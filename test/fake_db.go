@@ -29,7 +29,7 @@ func FakeDB(operation string) {
 	pathP := filepath.Dir(fileName)
 	err := godotenv.Load(pathP + "/../.env")
 	if err != nil {
-		fmt.Printf("Erro loading env.\n%v\n\n", err)
+		fmt.Printf("Error loading env.\n%v\n\n", err)
 	}
 	dbname := os.Getenv("DATABASE_NAME")
 	postgreUser := os.Getenv("PSQL_USER")
