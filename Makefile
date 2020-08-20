@@ -12,7 +12,7 @@ build:
 	clear && go build
 
 coverage:
-	clear && go test ./... -coverprofile=coverage.txt -covermode=atomic
+	clear && GIN_MODE=release go test -p 1 ./... -coverprofile=coverage.txt -covermode=atomic
 
 test_build: build
 	rm -rf uptime-server-microservice
