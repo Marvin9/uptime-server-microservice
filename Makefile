@@ -6,7 +6,7 @@ test:
 	clear && GIN_MODE=release go test -p 1 ./...
 
 verbose_test:
-	clear && DATABASE_NAME=uptime_server_service_test go test ./... -v
+	clear && GIN_MODE=release go test -p 1 ./... -v
 
 build:
 	clear && go build
