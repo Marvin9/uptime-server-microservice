@@ -25,11 +25,13 @@ const (
 
 // FakeDB is used in unit tests to mock db
 func FakeDB(operation string) {
-	_, fileName, _, _ := runtime.Caller(0)
-	pathP := filepath.Dir(fileName)
-	err := godotenv.Load(pathP + "/../.env")
-	if err != nil {
-		fmt.Printf("Error loading env.\n%v\n\n", err)
+	if os.Getenv("CI") == "" {
+		_, fileName, _, _ := runtime.Caller(0)
+		pathP := filepath.Dir(fileName)
+		err := godotenv.Load(pathP + "/../.env")
+		if err != nil {
+			fmt.Printf("Error loading env.\n%v\n\n", err)
+		}
 	}
 	dbname := os.Getenv("DATABASE_NAME")
 	postgreUser := os.Getenv("PSQL_USER")
