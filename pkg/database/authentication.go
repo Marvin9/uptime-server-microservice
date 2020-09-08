@@ -70,7 +70,7 @@ func LoginUser(email, password string) (int, string, error) {
 	jwtClaims := &models.Claims{
 		UniqueID: detailsOfUser.UniqueID,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: utils.JWTExpirationTime,
+			ExpiresAt: utils.JWTExpirationTime(),
 		},
 	}
 

@@ -19,4 +19,6 @@ var JWTExpireAfter = 30 * time.Minute
 var JWTCookieExpireAfter = 60 * 30
 
 // JWTExpirationTime is used while generating token as well as in cookie
-var JWTExpirationTime = time.Now().Add(JWTExpireAfter).Unix()
+func JWTExpirationTime() int64 {
+	return time.Now().Add(JWTExpireAfter).Unix()
+}
